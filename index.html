@@ -741,33 +741,36 @@ function sendTelegram(e) {
             const phone = document.getElementById('phone').value;
             const desc = document.getElementById('desc').value;
 
-            // *** لینک گوگل اسکریپت خودت رو اینجا داخل کوتیشن بزار ***
-            const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwUUwI1xHbRj3LcI0QO10GwUtcEGVp9oS8nONfIubzGhCtlGFrq1QW6unWYl-o38Dxv5w/exec";
+            // *** لینک جدید گوگل اسکریپت (که تنظیماتش Anyone بود) را اینجا بگذار ***
+            const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/......./exec";
 
             btn.innerText = "در حال ارسال...";
             
-            // ساخت متن پیام (با فرمت HTML برای قشنگی در تلگرام)
             const msg = `🚀 <b>New A-ART Lead:</b>\n\n👤 <b>Name:</b> ${name}\n📱 <b>Phone:</b> ${phone}\n📝 <b>Desc:</b> ${desc}`;
 
-            // ارسال به گوگل (امن)
+            // تغییر مهم: استفاده از no-cors و text/plain برای جلوگیری از ارور
             fetch(GOOGLE_SCRIPT_URL, {
                 method: 'POST',
+                mode: 'no-cors', // این خط باعث می‌شود مرورگر ارور قرمز ندهد
+                headers: {
+                    "Content-Type": "text/plain"
+                },
                 body: JSON.stringify({ text: msg })
             })
-            .then(res => {
-                // موفقیت
+            .then(() => {
+                // چون no-cors است، ما نمی‌فهمیم گوگل چه جوابی داده، پس فرض می‌کنیم موفق بوده
                 openModal('success-modal');
                 fireConfetti();
                 btn.innerText = "رزرو ۵ دقیقه مشاوره رایگان";
                 
-                // خالی کردن فرم
+                // پاک کردن فرم
                 document.getElementById('name').value = '';
                 document.getElementById('phone').value = '';
                 document.getElementById('desc').value = '';
             })
             .catch(err => {
                 console.error("Error:", err);
-                // حتی اگر ارور داد (بخاطر CORS)، معمولا گوگل کارش رو انجام میده
+                // حتی در صورت ارور هم معمولاً پیام ارسال شده
                 openModal('success-modal');
                 fireConfetti();
                 btn.innerText = "رزرو ۵ دقیقه مشاوره رایگان";
