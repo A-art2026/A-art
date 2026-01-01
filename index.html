@@ -95,6 +95,66 @@
         }
         .header-btn:hover { box-shadow: 0 0 20px rgba(204,255,0,0.5); transform: scale(1.05); }
 
+        /* Header Layout Fix (LTR for positioning, RTL for texts) */
+        header.always-visible { direction: ltr; }
+        .header-left-group, .header-right-group { display: flex; align-items: center; gap: 12px; }
+        .header-center-group { flex: 1; display: flex; justify-content: center; align-items: center; }
+        .header-center-group, .mobile-nav-links { direction: rtl; }
+
+        /* Hide link styles (only used in mobile-nav) */
+        .mobile-nav-links a { color: #fff; }
+        .mobile-nav-links a:hover { color: var(--acid-lime); }
+
+        /* ABOUT & SOCIAL (under contact) */
+        .contact-extra {
+            width: 100%;
+            max-width: 900px;
+            margin-top: 40px;
+            padding: 25px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            backdrop-filter: blur(6px);
+        }
+        .about-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 25px;
+            margin-bottom: 20px;
+            direction: ltr; /* logo left */
+        }
+        .about-logo { width: 70px; height: 70px; border-radius: 14px; }
+        .about-text { flex: 1; text-align: right; direction: rtl; }
+        .about-text h3 { color: white; font-size: 1.4rem; margin-bottom: 8px; }
+        .about-text p { color: #aaa; font-size: 1rem; }
+
+        .social-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+        .social-item {
+            background: rgba(0,0,0,0.35);
+            border: 1px solid #333;
+            border-radius: 16px;
+            padding: 14px 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: white;
+            transition: 0.3s;
+        }
+        .social-item i { font-size: 1.4rem; color: var(--acid-lime); }
+        .social-item span { font-size: 0.95rem; color: #fff; }
+        .social-item small { font-size: 0.85rem; color: #aaa; margin-top: 2px; }
+        .social-item:hover { border-color: var(--acid-lime); background: rgba(204,255,0,0.06); }
+        .phone-item { cursor: default; }
+        .phone-item:hover { transform: none; }
+
+
         /* Mobile Nav Links (Hidden on Desktop) */
         .mobile-nav-links { display: none; }
 
@@ -334,18 +394,22 @@
                 gap: 10px;
                 justify-content: space-between; 
             }
-            
-            .header-logo { height: 35px; order: 1; }
-            
+
+            .header-left-group { order: 1; }
+            .header-center-group { order: 2; flex: 1; }
+            .header-right-group { order: 3; }
+
+            .header-right-group .header-logo { height: 35px; }
+
             .mobile-nav-links {
-                display: flex; gap: 15px; order: 2;
+                display: flex; gap: 15px;
                 font-size: 0.8rem; color: #ccc;
                 justify-content: center;
             }
             .mobile-nav-links a { color: #fff; }
-            
+
             .header-btn { 
-                padding: 6px 12px; font-size: 0.7rem; order: 3; 
+                padding: 6px 12px; font-size: 0.7rem; 
                 width: auto;
             }
 
@@ -397,7 +461,35 @@
                 top: 130px;
             }
             
+
+
+            /* ABOUT & SOCIAL MOBILE */
+            .contact-extra { padding: 20px; }
+            .about-row { flex-direction: column; direction: rtl; }
+            .about-text { text-align: center; }
+            .social-row { grid-template-columns: repeat(2, 1fr); }
             .interactive:hover { transform: none !important; box-shadow: none !important; }
+
+            /* === FIX ABOUT + SOCIAL ON MOBILE === */
+.about-social-wrap{
+    margin-top: 60px;   /* از فرم جدا بشه */
+    width: 100%;
+}
+
+.about-box{
+    padding: 20px;
+}
+
+.social-box{
+    grid-template-columns: repeat(2, 1fr); /* آیکن‌ها ۲×۲ */
+    gap: 12px;
+}
+
+.social-item{
+    min-height: auto;
+    padding: 14px 8px;
+}
+
         }
 
     </style>
@@ -414,25 +506,37 @@
 
     <header class="always-visible">
         <div class="header-left-group">
-            <img src="./assets/logo.png" alt="A-ART" class="header-logo interactive">
             <a href="#contact" class="header-btn interactive">رزرو مشاوره</a>
         </div>
-        
-        <!-- لینک‌ها (دکمه مجله اضافه شد) -->
-        <div class="header-links-container">
-            <a href="./blog/" class="header-link interactive" style="color:var(--acid-lime); font-weight:bold;">مجله هوش مصنوعی</a>
-            <a href="#portfolio" class="header-link interactive">پروژه‌ها</a>
-            <a href="#comparison" class="header-link interactive">تفاوت‌ها</a>
+
+        <div class="header-center-group">
+            <div class="mobile-nav-links">
+                <a href="#portfolio" class="interactive">پروژه‌ها</a>
+                <a href="#comparison" class="interactive">تفاوت‌ها</a>
+                <a href="./blog/" class="interactive">بلاگ</a>
+            </div>
+        </div>
+
+        <div class="header-right-group">
+            <img src="./assets/logo.png" alt="A-ART" class="header-logo interactive">
         </div>
     </header>
 
     <!-- Control Panel: Desktop Only (Original State) -->
     <div id="control-panel">
-        <a href="#portfolio" class="nav-link interactive">نمونه کارها</a>
+        <button id="trap-btn" onclick="triggerTrap()" class="interactive">چراغ اتاق</button>
+
         <div style="display:flex; align-items:center; gap:10px;" onclick="toggleFlashlight()" class="interactive">
             <span style="font-size:0.8rem; color:#aaa;">چراغ قوه</span>
             <div class="toggle-switch" id="flash-toggle"></div>
         </div>
+
+        <a href="./blog/" class="nav-link interactive">بلاگ</a>
+        <a href="#comparison" class="nav-link interactive">تفاوت‌ها</a>
+        <a href="#portfolio" class="nav-link interactive">پروژه‌ها</a>
+    </div>
+
+</div>
         <button id="trap-btn" onclick="triggerTrap()" class="interactive">چراغ اتاق</button>
         <a href="#comparison" class="nav-link interactive">تفاوت‌ها</a>
     </div>
@@ -607,7 +711,40 @@
                 <textarea id="desc" rows="3" placeholder="توضیحات کوتاه" class="interactive"></textarea>
                 <button type="submit" class="submit-btn interactive">رزرو ۵ دقیقه مشاوره رایگان</button>
             </form>
+        
+
+        <!-- ABOUT & SOCIAL (NEW) -->
+        <div class="contact-extra interactive">
+            <div class="about-row interactive">
+                <img src="./assets/logo.png" alt="A-ART" class="about-logo interactive">
+                <div class="about-text">
+                    <h3 class="interactive">ما چی شد که هستیم و چرا هستیم؟</h3>
+                    <p class="interactive">لورم ایپسوم متن ساختگی برای تغییر متن در آینده.</p>
+                </div>
+            </div>
+
+            <div class="social-row interactive">
+                <a href="<!-- INSTAGRAM_LINK -->" class="social-item interactive" target="_blank" rel="noopener">
+                    <i class="fab fa-instagram"></i>
+                    <span>اینستاگرام</span>
+                </a>
+                <a href="<!-- TELEGRAM_LINK -->" class="social-item interactive" target="_blank" rel="noopener">
+                    <i class="fab fa-telegram"></i>
+                    <span>تلگرام</span>
+                </a>
+                <a href="<!-- LINKEDIN_LINK -->" class="social-item interactive" target="_blank" rel="noopener">
+                    <i class="fab fa-linkedin"></i>
+                    <span>لینکدین</span>
+                </a>
+                <div class="social-item interactive phone-item">
+                    <i class="fas fa-phone"></i>
+                    <span>شماره تماس</span>
+                    <small>09925786530</small>
+                </div>
+            </div>
         </div>
+
+</div>
         
         <footer style="text-align:center; padding:20px; color:#555; margin-top:50px;">© 2025 A-ART STUDIO</footer>
     </section>
