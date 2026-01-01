@@ -4,52 +4,146 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مجله هوش مصنوعی | A-ART</title>
-    <!-- استایل‌های اصلی سایتت رو اینجا کپی کن -->
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
     <style>
-        body { background: #050505; color: white; font-family: 'Vazirmatn', sans-serif; padding: 20px; }
-        .blog-container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
-        .post-card { background: #111; border: 1px solid #333; border-radius: 15px; overflow: hidden; transition: 0.3s; }
-        .post-card:hover { border-color: #CCFF00; transform: translateY(-5px); }
-        .post-img { width: 100%; height: 200px; object-fit: cover; }
-        .post-body { padding: 20px; }
-        .post-title { color: #CCFF00; font-size: 1.2rem; margin-bottom: 10px; }
-        .post-text { font-size: 0.9rem; color: #ccc; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-        .loading { text-align: center; color: #CCFF00; margin-top: 50px; }
+        :root { --acid-lime: #CCFF00; --vanta-black: #050505; }
+        body { background-color: var(--vanta-black); color: white; font-family: 'Vazirmatn', sans-serif; margin: 0; padding: 0; overflow-x: hidden; }
+        
+        /* Header */
+        header { padding: 20px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100; }
+        .logo { height: 40px; }
+        .back-btn { color: var(--acid-lime); text-decoration: none; font-weight: bold; border: 1px solid var(--acid-lime); padding: 8px 20px; border-radius: 50px; transition: 0.3s; }
+        .back-btn:hover { background: var(--acid-lime); color: black; }
+
+        /* Blog Container */
+        .container { max-width: 1200px; margin: 50px auto; padding: 0 20px; }
+        .page-title { text-align: center; font-size: 2.5rem; margin-bottom: 50px; }
+        .page-title span { color: var(--acid-lime); }
+
+        /* Grid */
+        .blog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
+        
+        /* Card */
+        .post-card { background: #111; border: 1px solid #333; border-radius: 20px; overflow: hidden; transition: 0.4s; display: flex; flex-direction: column; }
+        .post-card:hover { transform: translateY(-10px); border-color: var(--acid-lime); box-shadow: 0 10px 30px rgba(204, 255, 0, 0.1); }
+        
+        .post-img { width: 100%; height: 200px; object-fit: cover; border-bottom: 1px solid #333; }
+        .post-body { padding: 25px; flex-grow: 1; display: flex; flex-direction: column; }
+        .post-date { color: #666; font-size: 0.8rem; margin-bottom: 10px; }
+        .post-title { font-size: 1.3rem; margin-bottom: 15px; color: white; line-height: 1.4; }
+        
+        /* Content Preview */
+        .post-excerpt { color: #aaa; font-size: 0.9rem; line-height: 1.6; margin-bottom: 20px; 
+            display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        
+        .read-more { margin-top: auto; color: var(--acid-lime); text-decoration: none; font-size: 0.9rem; display: flex; align-items: center; gap: 5px; }
+        .read-more:hover { gap: 10px; }
+
+        /* Loading */
+        #loading { text-align: center; color: #666; font-size: 1.2rem; margin-top: 50px; }
+        .spinner { display: inline-block; width: 40px; height: 40px; border: 3px solid rgba(204,255,0,0.3); border-radius: 50%; border-top-color: var(--acid-lime); animation: spin 1s ease-in-out infinite; margin-bottom: 20px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        @media (max-width: 768px) {
+            .page-title { font-size: 1.8rem; }
+            .blog-grid { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
-    <h1 style="text-align:center; margin-bottom:50px;">آخرین مقالات <span style="color:#CCFF00">A-ART</span></h1>
-    
-    <div id="loading" class="loading">در حال بارگذاری مقالات از سرور...</div>
-    <div class="blog-container" id="blog-grid"></div>
+
+    <header>
+        <img src="./assets/logo.png" alt="A-ART" class="logo">
+        <a href="index.html" class="back-btn">بازگشت به خانه</a>
+    </header>
+
+    <div class="container">
+        <h1 class="page-title">تازه‌های دنیای <span class="gen-z-flicker">هوش مصنوعی</span></h1>
+        
+        <div id="loading">
+            <div class="spinner"></div><br>
+            در حال دریافت مقالات از سرور...
+        </div>
+
+        <div class="blog-grid" id="blog-grid">
+            <!-- مقالات اینجا اضافه میشوند -->
+        </div>
+    </div>
 
     <script>
-        // لینک گوگل اسکریپت خودت را اینجا بگذار
-        const API_URL = "https://script.google.com/macros/s/AKfycbzmlrfHVf2LtorEFIpjMfGCrFz7syiuK4MVjCxzySZjU-PiaFlb7DyvTL07Tq__FERO/execما_در_مرحله_۱";
+        // *** اینجا لینک گوگل اسکریپت خودت رو بزار ***
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxwU2s8WGVqx1u0o6vWG0eBtN9R15iyTmhPkN3zOy2u20qcoX-mBZlGV7CO7hFcGn9q/execا"; 
 
-        fetch(API_URL)
-            .then(res => res.json())
-            .then(data => {
-                document.getElementById('loading').style.display = 'none';
-                const container = document.getElementById('blog-grid');
+        async function loadPosts() {
+            try {
+                // درخواست به گوگل شیت برای گرفتن مقالات
+                const response = await fetch(SCRIPT_URL + "?action=read_posts");
+                const posts = await response.json();
                 
-                // مقالات را برعکس میکنیم تا جدیدترین اول بیاید
-                data.reverse().forEach(post => {
-                    const card = `
-                        <div class="post-card">
-                            <img src="${post.image}" class="post-img" onerror="this.src='./assets/logo.png'">
-                            <div class="post-body">
-                                <h3 class="post-title">${post.title}</h3>
-                                <div class="post-text">${post.content}</div>
-                                <br>
-                                <small style="color:#666">${new Date(post.date).toLocaleDateString('fa-IR')}</small>
-                            </div>
+                const grid = document.getElementById('blog-grid');
+                document.getElementById('loading').style.display = 'none';
+
+                if(posts.length === 0) {
+                    grid.innerHTML = '<p style="text-align:center; width:100%;">هنوز مقاله‌ای منتشر نشده است.</p>';
+                    return;
+                }
+
+                // نمایش جدیدترین مقاله اول (Reverse)
+                posts.reverse().forEach(post => {
+                    const date = new Date(post.date).toLocaleDateString('fa-IR');
+                    
+                    const card = document.createElement('div');
+                    card.className = 'post-card';
+                    card.innerHTML = `
+                        <img src="${post.image}" class="post-img" alt="${post.title}" onerror="this.src='https://via.placeholder.com/800x400?text=A-ART'">
+                        <div class="post-body">
+                            <span class="post-date">${date}</span>
+                            <h3 class="post-title">${post.title}</h3>
+                            <div class="post-excerpt">${post.content}</div> <!-- نمایش خلاصه -->
                         </div>
                     `;
-                    container.innerHTML += card;
+                    
+                    // کلیک روی کارت برای باز کردن مودال (ساده‌ترین روش برای سایت استاتیک)
+                    card.addEventListener('click', () => showFullArticle(post));
+                    grid.appendChild(card);
                 });
-            });
+
+            } catch (error) {
+                console.error(error);
+                document.getElementById('loading').innerHTML = "خطا در بارگذاری. لطفا فیلترشکن را بررسی کنید.";
+            }
+        }
+
+        // نمایش مودال برای خواندن کامل مقاله
+        function showFullArticle(post) {
+            // ساخت یک صفحه موقت یا مودال (ساده‌سازی برای شما)
+            const win = window.open("", "_blank");
+            win.document.write(`
+                <html lang="fa" dir="rtl">
+                <head><title>${post.title}</title>
+                <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet"/>
+                <style>
+                    body{background:#050505; color:#fff; font-family:'Vazirmatn'; padding:20px; line-height:1.8; max-width:800px; margin:0 auto;}
+                    img{max-width:100%; border-radius:10px; margin-bottom:30px;}
+                    h1{color:#CCFF00; margin-bottom:10px;}
+                    a{color:#CCFF00; text-decoration:none; border:1px solid #CCFF00; padding:5px 15px; border-radius:20px;}
+                </style>
+                </head>
+                <body>
+                    <a href="#" onclick="window.close()">بستن</a>
+                    <br><br>
+                    <img src="${post.image}">
+                    <h1>${post.title}</h1>
+                    <small style="color:#888">${new Date(post.date).toLocaleDateString('fa-IR')}</small>
+                    <hr style="border-color:#333">
+                    <div>${post.content}</div>
+                </body></html>
+            `);
+        }
+
+        loadPosts();
     </script>
 </body>
 </html>
