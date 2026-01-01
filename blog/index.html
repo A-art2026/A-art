@@ -34,9 +34,20 @@
         .post-date { color: #666; font-size: 0.8rem; margin-bottom: 10px; }
         .post-title { font-size: 1.3rem; margin-bottom: 15px; color: white; line-height: 1.4; }
         
-        /* Content Preview */
-        .post-excerpt { color: #aaa; font-size: 0.9rem; line-height: 1.6; margin-bottom: 20px; 
-            display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+       /* Content Preview */
+        .post-excerpt { 
+            color: #aaa; 
+            font-size: 0.9rem; 
+            line-height: 1.6; 
+            margin-bottom: 20px; 
+            
+            /* تنظیمات محدود کردن خطوط */
+            display: -webkit-box; 
+            -webkit-line-clamp: 3;  /* برای مرورگرهای قدیمی */
+            line-clamp: 3;          /* <--- این خط جدید را اضافه کن تا وارنینگ برود */
+            -webkit-box-orient: vertical; 
+            overflow: hidden; 
+        }
         
         .read-more { margin-top: auto; color: var(--acid-lime); text-decoration: none; font-size: 0.9rem; display: flex; align-items: center; gap: 5px; }
         .read-more:hover { gap: 10px; }
@@ -55,7 +66,7 @@
 <body>
 
     <header>
-        <img src="./assets/logo.png" alt="A-ART" class="logo">
+        <img src="../assets/logo.png" alt="A-ART" class="logo">
         <a href="index.html" class="back-btn">بازگشت به خانه</a>
     </header>
 
